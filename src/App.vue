@@ -1,5 +1,5 @@
 <script setup>
-import formComponent from "./components/formComponent.vue";
+import formComponent from "./components/FormComponent.vue";
 import qrDisplayComponent from "./components/QrDisplayComponent.vue";
 import { ref } from "vue";
 
