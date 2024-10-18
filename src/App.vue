@@ -1,30 +1,58 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import formComponent from "./components/formComponent.vue";
+import qrDisplayComponent from "./components/QrDisplayComponent.vue";
+import { ref } from "vue";
+
+const text = ref("");
+const size = ref(200);
+
+const handleChange = ({ target: { value: inputText } }) => {
+  text.value = inputText;
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  // Solo imprimirá el QR
+  window.print();
+};
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <!-- Contenedor principal con fondo azul navy y centrado -->
+
+  <div
+    class="flex flex-col items-center justify-center bg-blue-900 bg-opacity-20 min-h-screen p-4 text-white"
+  >
+    <!-- Componente QR con clase específica para imprimir solo el QR -->
+    <qrDisplayComponent :value="text" :size="size" class="qr-container" />
+
+    <!-- Formulario para ingresar el texto -->
+    <formComponent
+      :text="text"
+      @handleChange="handleChange"
+      @handleSubmit="handleSubmit"
+    />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+@media print {
+  /* Oculta todos los elementos de la página en la impresión */
+  body * {
+    display: none;
+  }
+
+  /* Muestra solo el QR durante la impresión */
+  .qr-container,
+  .qr-container * {
+    display: block;
+  }
+
+  /* Establece el tamaño y la posición del contenedor QR */
+  .qr-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 </style>
