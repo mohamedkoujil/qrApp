@@ -18,12 +18,10 @@ const handleSubmit = (e) => {
 </script>
 
 <template>
-  <!-- Contenedor principal con fondo azul navy y centrado -->
-
   <div
     class="flex flex-col items-center justify-center bg-blue-900 bg-opacity-20 min-h-screen p-4 text-white"
   >
-    <!-- Componente QR con clase específica para imprimir solo el QR -->
+    <!-- Componente QR -->
     <qrDisplayComponent :value="text" :size="size" class="qr-container" />
 
     <!-- Formulario para ingresar el texto -->
@@ -31,28 +29,20 @@ const handleSubmit = (e) => {
       :text="text"
       @handleChange="handleChange"
       @handleSubmit="handleSubmit"
+      class="form"
     />
   </div>
 </template>
 
 <style scoped>
+/* Estilo específico para que al imprimir solo se muestre el QR */
 @media print {
-  /* Oculta todos los elementos de la página en la impresión */
-  body * {
-    display: none;
-  }
-
-  /* Muestra solo el QR durante la impresión */
-  .qr-container,
-  .qr-container * {
+  .qr-container {
     display: block;
   }
 
-  /* Establece el tamaño y la posición del contenedor QR */
-  .qr-container {
-    position: absolute;
-    left: 0;
-    top: 0;
+  .form {
+    display: none;
   }
 }
 </style>
