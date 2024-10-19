@@ -1,4 +1,5 @@
 <script setup>
+import AdComponent from "./components/AdComponent.vue";
 import formComponent from "./components/FormComponent.vue";
 import qrDisplayComponent from "./components/QrDisplayComponent.vue";
 import { ref } from "vue";
@@ -18,27 +19,53 @@ const handleSubmit = (e) => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col items-center justify-center bg-blue-900 bg-opacity-20 min-h-screen p-4 text-white"
-  >
-    <!-- Componente QR -->
-    <qrDisplayComponent :value="text" :size="size" class="qr-container" />
+  <div class="container mx-auto flex flex-col lg:flex-row justify-between">
+    <!-- Ad for desktop, hidden on mobile -->
+    <AdComponent class="hidden lg:block" />
 
-    <!-- Formulario para ingresar el texto -->
-    <formComponent
-      :text="text"
-      @handleChange="handleChange"
-      @handleSubmit="handleSubmit"
-      class="form"
-    />
+    <!-- Main QR Generator Area -->
+    <div
+      class="flex flex-col items-center justify-center h-screen relative w-full"
+    >
+      <!-- Ad for mobile, shown only on small screens -->
+      <AdComponent class="sm:hidden block absolute top-2 right-2" />
+
+      <!-- QR Code Display -->
+      <qrDisplayComponent :value="text" :size="size" class="qr-container" />
+
+      <!-- Form to Input Text -->
+      <formComponent
+        :text="text"
+        @handleChange="handleChange"
+        @handleSubmit="handleSubmit"
+        class="form mt-4"
+      />
+    </div>
+
+    <!-- Ad for desktop, hidden on mobile -->
+    <AdComponent class="hidden lg:block" />
   </div>
 </template>
 
 <style scoped>
 /* Estilo específico para que al imprimir solo se muestre el QR */
 @media print {
+  body * {
+    visibility: hidden;
+  }
+
   .qr-container {
-    display: block;
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 
   .form {
